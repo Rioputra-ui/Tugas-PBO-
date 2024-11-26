@@ -44,11 +44,17 @@
     td {
       text-align: center;
     }
+
+    /* Menyembunyikan judul Data Table */
+    h2 {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
   <div id="table-container">
+    <!-- Judul yang disembunyikan -->
     <h2>Data Table</h2>
     <table>
       <thead>
