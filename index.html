@@ -3,7 +3,7 @@
 <head>  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Form</title>  
+  <title>Login Form with Data Table</title>  
   <style>
     /* Basic styling for the body */
     body {
@@ -22,23 +22,25 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 300px;
+      width: 600px;
       text-align: center;
     }
 
     /* Styling the table */
     table {
       width: 100%;
-      border-spacing: 0;
+      border-collapse: collapse;
+      margin-bottom: 20px;
     }
 
-    td {
-      padding: 8px;
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
     }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
+    th {
+      background-color: #f2f2f2;
       font-weight: bold;
     }
 
@@ -46,7 +48,7 @@
     input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
-      margin: 0;
+      margin: 10px 0;
       border: 1px solid #ddd;
       border-radius: 4px;
       box-sizing: border-box;
@@ -101,6 +103,27 @@
       view: {
         signform: function () {
           return `
+            <!-- Data Table displaying users -->
+            <h3>Registered Users</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Pin</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${pbo.model.mahasiswa.map(user => `
+                  <tr>
+                    <td>${user.username}</td>
+                    <td>${user.pin}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+
+            <!-- Login Form -->
+            <h3>Login</h3>
             <table>
               <tr>
                 <td><label for="username">Username</label></td>
