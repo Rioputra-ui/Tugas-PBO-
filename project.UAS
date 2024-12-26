@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kedai Rio Putra</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #ff9800;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar h1 {
+      margin: 0;
+    }
+    .cart-count {
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .container {
+      padding: 1rem;
+    }
+    .login-form {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .login-form h2 {
+      margin-top: 0;
+    }
+    .login-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .login-form button {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 1rem;
+      width: calc(50% - 1rem);
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .product img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .product h3 {
+      margin: 0.5rem 0;
+    }
+    .product button {
+      padding: 0.5rem;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .order-list {
+      margin-top: 2rem;
+    }
+    .order-total {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .order-detail {
+      margin-top: 1rem;
+      background-color: #f9f9f9;
+      padding: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .complete-order {
+      padding: 0.5rem;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .order-confirmation {
+      display: none;
+      background-color: #4caf50;
+      color: white;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Kedai Rio Putra</h1>
+    <span class="cart-count" id="cart-count" onclick="toggleOrderList()">0</span>
+  </div>
+
+  <div id="login-section" class="container">
+    <form class="login-form" onsubmit="return login(event)">
+      <h2>Login Admin</h2>
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Masukkan username" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Masukkan password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div id="main-content" class="container" style="display: none;">
+    <h2>Daftar Produk</h2>
+    <div class="products" id="products">
+      <!-- Menu Makanan -->
+      <div class="product" data-name="Dimsum" data-price="25000">
+        <img src="https://asset.kompas.com/crops/yFCpuKxNvIx9uSxfduuOjMeL8a0=/183x185:784x585/750x500/data/photo/2022/05/19/6285d37131c23.jpg" alt="Dimsum">
+        <h3>Dimsum</h3>
+        <p>Rp 25.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Roti Bakar" data-price="15000">
+        <img src="https://sukabumizone.com/wp-content/uploads/2023/02/6fdaf748-443f-4d8f-93f8-dac03976416f_Go-Biz_20210907_025924.jpeg" alt="Roti Bakar">
+        <h3>Roti Bakar</h3>
+        <p>Rp 15.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Mie Chili Oil" data-price="20000">
+        <img src="https://www.unileverfoodsolutions.co.id/dam/global-ufs/mcos/SEA/calcmenu/recipes/ID-recipes/pasta-dishes/chili-oil-chicken-bakmie/FrontAngleChiliOilForRecipePage.jpg" alt="Mie Chili Oil">
+        <h3>Mie Chili Oil</h3>
+        <p>Rp 20.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Pisang Bakar" data-price="15000">
+        <img src="https://www.aromacafe.id/wp-content/uploads/2024/06/Produk-Pisang-Bakar-Aroma-Cafe_0002_3-pisang-bakar-keju-coklat-min-500x500.jpg" alt="Pisang Bakar">
+        <h3>Pisang Bakar</h3>
+        <p>Rp 15.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Nasi Goreng" data-price="25000">
+        <img src="https://img.kurio.network/ewrCJ9eRNpljU-80vrqWDQkN7o4=/1200x675/filters:quality(80)/https://kurio-img.kurioapps.com/20/10/10/a7e9eaa0-1c22-42b0-a11f-0a5ad1d30126.jpeg" alt="Nasi Goreng">
+        <h3>Nasi Goreng</h3>
+        <p>Rp 25.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Mie Goreng" data-price="20000">
+        <img src="https://asset.kompas.com/crops/SaLWJi2NABt1w6TzEQ5KCSZy1k4=/23x0:1000x652/1200x800/data/photo/2021/01/22/600a67c8be421.jpg">
+        <h3>Mie Goreng</h3>
+        <p>Rp 20.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <!-- Menu Minuman -->
+      <div class="product" data-name="Thai Tea" data-price="15000">
+        <img src="https://fibercreme.com/wp-content/uploads/2021/04/Bubble-Thai-Tea-3.jpg" alt="Thai Tea">
+        <h3>Thai Tea</h3>
+        <p>Rp 15.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Es Teller" data-price="20000">
+        <img src="https://www.frisianflag.com/storage/app/media/uploaded-files/es-teler-nikmat.jpg">
+        <h3>Es Teller</h3>
+        <p>Rp 20.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Jus Alpukat" data-price="15000">
+        <img src="https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/84/2024/03/27/New-Project-2024-03-27T195209826-2501956688.png" alt="Jus Alpukat">
+        <h3>Jus Alpukat</h3>
+        <p>Rp 15.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Jus Mangga" data-price="15000">
+        <img src="https://cdn1-production-images-kly.akamaized.net/IXwkGoxNo1fBdDms9BullOXvjLg=/1191x0:3681x3319/469x625/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/2952663/original/065258500_1572335694-2019-10-29.jpg" alt="Jus Mangga">
+        <h3>Jus Mangga</h3>
+        <p>Rp 15.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Es Jeruk" data-price="10000">
+        <img src="https://cdn1-production-images-kly.akamaized.net/2bUdwGUydtL50AOEMnCHNkD7FYQ=/469x625/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/4777522/original/071308500_1710839241-iced-orange-cocktail-table__2_.jpg" alt="Es Jeruk">
+        <h3>Es Jeruk</h3>
+        <p>Rp 10.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Es Teh Manis" data-price="10000">
+        <img src="https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/77/2024/08/07/minum-es-teh-manisjpg-20230918081102-313473934.jpg">
+        <h3>Es Teh Manis</h3>
+        <p>Rp 10.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+      <div class="product" data-name="Matcha" data-price="25000">
+        <img src="https://dfcm824dmlg8u.cloudfront.net/wp-content/uploads/2024/09/Shutterstock_Matcha-Latte.jpg" alt="Matcha">
+        <h3>Matcha</h3>
+        <p>Rp 25.000</p>
+        <button onclick="addToOrder(this)">Pesan</button>
+      </div>
+    </div>
+    <div class="order-list" id="order-list" style="display: none;">
+      <h3>Pesanan Anda</h3>
+      <ul id="order-items"></ul>
+      <p class="order-total" id="order-total">Total: Rp 0</p>
+      <button onclick="clearOrder()">Hapus Pesanan</button>
+      <button class="complete-order" onclick="completeOrder()">Selesaikan Pesanan</button>
+    </div>
+  </div>
+
+  <div id="order-confirmation" class="order-confirmation">
+    <h3>Pesanan Berhasil Diselesaikan!</h3>
+  </div>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }
+
+    let order = [];
+
+    function addToOrder(button) {
+      const product = button.parentElement;
+      const name = product.getAttribute('data-name');
+      const price = parseInt(product.getAttribute('data-price'));
+
+      // Check if the item already exists in the order
+      const existingItem = order.find(item => item.name === name);
+
+      if (existingItem) {
+        existingItem.quantity += 1; // Increase quantity if it exists
+      } else {
+        order.push({ name, price, quantity: 1 }); // Add new item to the order
+      }
+
+      updateOrder();
+    }
+
+    function updateOrder() {
+      const orderList = document.getElementById('order-items');
+      const orderTotal = document.getElementById('order-total');
+      const cartCount = document.getElementById('cart-count');
+      
+      // Clear current order list
+      orderList.innerHTML = '';
+
+      let total = 0;
+
+      // Display the updated order items
+      order.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x${item.quantity} - Rp ${item.price * item.quantity}`;
+        orderList.appendChild(li);
+        total += item.price * item.quantity;
+      });
+
+      // Update the total
+      orderTotal.textContent = `Total: Rp ${total.toLocaleString()}`;
+
+      // Update the cart count
+      cartCount.textContent = order.length;
+    }
+
+    function toggleOrderList() {
+      const orderList = document.getElementById('order-list');
+      orderList.style.display = orderList.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function clearOrder() {
+      order = [];
+      document.getElementById('order-items').innerHTML = '';
+      document.getElementById('order-total').textContent = 'Total: Rp 0';
+      document.getElementById('cart-count').textContent = '0';
+    }
+
+    function completeOrder() {
+      // Clear the order and show confirmation
+      clearOrder();
+      const confirmationMessage = document.getElementById('order-confirmation');
+      confirmationMessage.style.display = 'block';
+
+      // Hide confirmation message after 3 seconds
+      setTimeout(() => {
+        confirmationMessage.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
